@@ -28,10 +28,10 @@
     state: present
 
 - name: Download VirtualBox extension pack
-  command: "cd /tmp/ &&  wget http://download.virtualbox.org/virtualbox/{{virtualbox_version}}.2/Oracle_VM_VirtualBox_Extension_Pack-{{virtualbox_version}}.2.vbox-extpack"
+  shell: "cd /tmp/ &&  wget http://download.virtualbox.org/virtualbox/{{virtualbox_version}}.2/Oracle_VM_VirtualBox_Extension_Pack-{{virtualbox_version}}.2.vbox-extpack"
 
 - name: Install VirtualBox extension pack
-  command: "VBoxManage extpack install Oracle_VM_VirtualBox_Extension_Pack-{{virtualbox_version}}.2.vbox-extpack"
+  shell: "VBoxManage extpack install /tmp/Oracle_VM_VirtualBox_Extension_Pack-{{virtualbox_version}}.2.vbox-extpack"
 
 - name: Add user to run virtualbox deamon
   user:
@@ -79,7 +79,7 @@
     - php5-gd
 
 - name: Download phpVirtualBox
-  command: "cd /tmp/ &&  wget http://sourceforge.net/projects/phpvirtualbox/files/phpvirtualbox-{{virtualbox_version}}-2.zip"
+  shell: "cd /tmp/ &&  wget http://sourceforge.net/projects/phpvirtualbox/files/phpvirtualbox-{{virtualbox_version}}-2.zip"
 
 - name: Make sure webdir for phpVirtualBox exists
   file:

@@ -1,4 +1,4 @@
-Todo: add travis build status
+[![Build Status](https://travis-ci.org/mediapeers/ansible-role-virtualbox.svg?branch=master)](https://travis-ci.org/mediapeers/ansible-role-virtualbox)
 
 # Ansible role Virtualbox
 Installs headless Virtualbox and phpVirtualbox for remote access through Web GUI. Meant for a headless Ubuntu 14.04. server.
