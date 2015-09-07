@@ -62,13 +62,13 @@
 #  command: "/etc/init.d/vboxdrv setup"
 #  register: vboxdrv_setup
 
-- name: Check status of vbox drivers
-  command: "/etc/init.d/vboxdrv status"
-  register: vboxdrv_status
+#- name: Check status of vbox drivers
+#  command: "/etc/init.d/vboxdrv status"
+#  register: vboxdrv_status
 
-- name: Output vbox status
-  debug:
-    msg: "{{vboxdrv_status.stdout}}"
+#- name: Output vbox status
+#  debug:
+#    msg: "{{vboxdrv_status.stdout}}"
 
 # phpVirtualBox setup:
 
