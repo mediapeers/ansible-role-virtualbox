@@ -20,8 +20,6 @@ galaxy_info:
     - trusty
     - utopic
     - vivid
-  - name: Debian
-    - wheezy
   categories:
   - web
   - virtualisation

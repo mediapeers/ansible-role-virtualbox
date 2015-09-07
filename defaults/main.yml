@@ -2,3 +2,6 @@
 # defaults file for mpx.virtualbox
 
 virtualbox_version: 5.0 # could also be 4.3 or 4.2 etc.
+virtualbox_user: vbox
+virtualbox_user_pw: changeme
+virtualbox_user_sha_pw: "$6$rngaHnG3$PVgZgPKUIL0.JlnyzDPefV8p0ha/YgFPSZ58db9K0tVDrjoP7dWTvBC4xYv.I7GAT3sxeE.SgKPO/7p9M8HDl/"

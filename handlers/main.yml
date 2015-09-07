@@ -1,2 +1,7 @@
 ---
 # handlers file for mpx.virtualbox
+
+- name: restart vboxweb-service
+  service:
+    name: vboxweb-service
+    state: restarted

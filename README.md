@@ -1,13 +1,14 @@
 # Ansible role Virtualbox
 Installs headless Virtualbox and phpVirtualbox for remote access through Web GUI. Meant for a headless Ubuntu 14.04. server.
-Should also work on other Ubuntu versions and editions.
+Might also work on other Ubuntu versions and editions.
 
 ## Requirements
-For Ubuntu server OS.
+For Ubuntu 14.04 server OS.
 
 ## Role Variables
 The role accepts following variables:
-* virtualbox_version: 4.3  # Major Virtuablbox version
+* `virtualbox_version: 4.3`  Major Virtuablbox version
+* `virtualbox_user: vbox` User that runs Virtualbox deamon and phpVirtualbox connects to
 
 ## Dependencies
 Depends on no other roles.
@@ -18,7 +19,7 @@ Example on how to include role into your playbook:
 - name: My playbook
   hosts: servers
   roles:
-    - { role: mpx.virtualbox, version: 5 }
+    - { role: mpx.virtualbox, virtualbox_version: 5.0, virtualbox_user: vbox }
 ```
 
 ## License

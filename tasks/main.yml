@@ -1,2 +1,109 @@
 ---
 # tasks file for mpx.virtualbox
+
+- name: Install build-esential and dkms (prepare)
+  apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+  with_items:
+    - build-essential
+    - dkms
+    - unzip
+
+- name: Add VirtualBox repo key
+  apt_key:
+    url: http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc
+    state: present
+
+- name: Add VirtualBox repo
+  apt_repository:
+    repo: 'deb http://download.virtualbox.org/virtualbox/debian trusty contrib'
+    state: present
+    update_cache: yes
+
+- name: Install virtualbox in given version
+  apt:
+    name: virtualbox-{{virtualbox_version}}
+    state: present
+
+- name: Download VirtualBox extension pack
+  command: "cd /tmp/ &&  wget http://download.virtualbox.org/virtualbox/{{virtualbox_version}}.2/Oracle_VM_VirtualBox_Extension_Pack-{{virtualbox_version}}.vbox-extpack"
+
+- name: Install VirtualBox extension pack
+  command: "VBoxManage extpack install Oracle_VM_VirtualBox_Extension_Pack-{{virtualbox_version}}.vbox-extpack"
+
+- name: Add user to run virtualbox deamon
+  user:
+    name: "{{virtualbox_user}}"
+    createhome: yes
+    shell: '/bin/bash'
+    state: present
+    append: yes # append groups
+    groups: vboxusers
+    update_password: on_create # only touch PW on user creation
+    password: "{{virtualbox_user_sha_pw}}"
+
+- name: Create a folder for ISO files to be shared with phpVirtualBox
+  file:
+    path: /home/{{virtualbox_user}}/isos
+    state: directory
+
+- name: Initialize vbox drivers
+  command: "/etc/init.d/vboxdrv setup"
+  register: vboxdrv_setup
+
+- name: Output vbox setup
+  debug:
+    msg: "{{vboxdrv_setup.stdout}}"
+
+- name: Check status of vbox drivers
+  command: "/etc/init.d/vboxdrv status"
+  register: vboxdrv_status
+
+- name: Output vbox status
+  debug:
+    msg: "{{vboxdrv_status.stdout}}"
+
+# phpVirtualBox setup:
+
+- name: Install Apache and PHP5 with necessary extensions
+  apt:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - apache2
+    - php5
+    - php5-common
+    - php-soap
+    - php5-gd
+
+- name: Download phpVirtualBox
+  command: "cd /tmp/ &&  wget http://sourceforge.net/projects/phpvirtualbox/files/phpvirtualbox-{{virtualbox_version}}-2.zip"
+
+- name: Make sure webdir for phpVirtualBox exists
+  file:
+    path: /var/www/html/phpvirtualbox
+    state: directory
+
+- name: Install phpVirtualBox
+  unarchive:
+    src: "/tmp/phpvirtualbox-{{virtualbox_version}}-2.zip"
+    dest: "/var/www/html/phpvirtualbox"
+
+- name: Configure phpVirtualBox
+  template:
+    src: config.php.j2
+    dest: /var/www/html/phpvirtualbox/config.php
+
+- name: Configure vboxweb deamon user
+  template:
+    src: virtualbox.j2
+    dest: /etc/default/virtualbox
+  notify:
+    - restart vboxweb-service
+
+- name: Enable vboxweb deamon on startub
+  service:
+    name: vboxweb-service
+    enabled: yes
