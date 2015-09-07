@@ -28,7 +28,6 @@ describe "Virtualbox host setup" do
     it { should have_home_directory("/home/#{virtualbox_user}") }
     it { should belong_to_group('vboxusers') }
     it { should have_login_shell('bin/bash') }
-#    it { should have_authorized_key('ssh-rsa XYZ') }
   end
 
   describe file("/home/#{virtualbox_user}/isos") do
