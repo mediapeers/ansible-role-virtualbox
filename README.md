@@ -1,3 +1,5 @@
+Todo: add travis build status
+
 # Ansible role Virtualbox
 Installs headless Virtualbox and phpVirtualbox for remote access through Web GUI. Meant for a headless Ubuntu 14.04. server.
 Might also work on other Ubuntu versions and editions.

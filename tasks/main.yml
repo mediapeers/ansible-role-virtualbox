@@ -28,10 +28,10 @@
     state: present
 
 - name: Download VirtualBox extension pack
-  command: "cd /tmp/ &&  wget http://download.virtualbox.org/virtualbox/{{virtualbox_version}}.2/Oracle_VM_VirtualBox_Extension_Pack-{{virtualbox_version}}.vbox-extpack"
+  command: "cd /tmp/ &&  wget http://download.virtualbox.org/virtualbox/{{virtualbox_version}}.2/Oracle_VM_VirtualBox_Extension_Pack-{{virtualbox_version}}.2.vbox-extpack"
 
 - name: Install VirtualBox extension pack
-  command: "VBoxManage extpack install Oracle_VM_VirtualBox_Extension_Pack-{{virtualbox_version}}.vbox-extpack"
+  command: "VBoxManage extpack install Oracle_VM_VirtualBox_Extension_Pack-{{virtualbox_version}}.2.vbox-extpack"
 
 - name: Add user to run virtualbox deamon
   user:
