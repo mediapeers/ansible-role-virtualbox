@@ -1,2 +1,4 @@
 ---
 # defaults file for mpx.virtualbox
+
+virtualbox_version: 5.0 # could also be 4.3 or 4.2 etc.
