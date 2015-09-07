@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe "Virtualbox host setup" do
-  let(:virtualbox_user) { ANSIBLE_VARS.fetch('virtualbox_user', 'FAIL') }
+  virtualbox_user = ANSIBLE_VARS.fetch('virtualbox_user', 'FAIL')
 
   describe package("virtualbox-#{ANSIBLE_VARS.fetch('virtualbox_version', 'UNKNOWN')}") do
     it { should be_installed }
@@ -36,7 +36,7 @@ describe "Virtualbox host setup" do
     it { should be_directory }
   end
 
-  desribe file('/var/www/html/phpvirtualbox/config.php') do
+  describe file('/var/www/html/phpvirtualbox/config.php') do
     it { should contain("var $username = '#{virtualbox_user}';") }
     it { should contain("var $password = '#{ANSIBLE_VARS.fetch('virtualbox_user_pw', 'fail')}'") }
   end

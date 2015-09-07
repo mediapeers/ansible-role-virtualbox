@@ -27,11 +27,17 @@
     name: virtualbox-{{virtualbox_version}}
     state: present
 
+- name: Check if extension pack is already installed
+  shell: "VBoxManage list extpacks"
+  register: extpack_list
+
 - name: Download VirtualBox extension pack
   shell: "cd /tmp/ &&  wget http://download.virtualbox.org/virtualbox/{{virtualbox_version}}.2/Oracle_VM_VirtualBox_Extension_Pack-{{virtualbox_version}}.2.vbox-extpack"
+  when: 'extpack_list.stdout == "Extension Packs: 0"'
 
 - name: Install VirtualBox extension pack
   shell: "VBoxManage extpack install --replace /tmp/Oracle_VM_VirtualBox_Extension_Pack-{{virtualbox_version}}.2.vbox-extpack"
+  when: 'extpack_list.stdout == "Extension Packs: 0"'
 
 - name: Add user to run virtualbox deamon
   user:
@@ -47,15 +53,14 @@
 - name: Create a folder for ISO files to be shared with phpVirtualBox
   file:
     path: /home/{{virtualbox_user}}/isos
+    owner: "{{virtualbox_user}}"
+    group: vboxusers
+    mode: 0770
     state: directory
 
-- name: Initialize vbox drivers
-  command: "/etc/init.d/vboxdrv setup"
-  register: vboxdrv_setup
-
-- name: Output vbox setup
-  debug:
-    msg: "{{vboxdrv_setup.stdout}}"
+#- name: Initialize vbox drivers
+#  command: "/etc/init.d/vboxdrv setup"
+#  register: vboxdrv_setup
 
 - name: Check status of vbox drivers
   command: "/etc/init.d/vboxdrv status"
