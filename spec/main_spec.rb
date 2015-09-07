@@ -38,7 +38,9 @@ describe "Virtualbox host setup" do
 
   describe file('/var/www/html/config.php') do
     it { should contain("var $username = '#{virtualbox_user}';") }
-    it { should contain("var $password = '#{ANSIBLE_VARS.fetch('virtualbox_user_pw', 'fail')}'") }
+    it { should contain("var $password = '#{ANSIBLE_VARS.fetch('virtualbox_user_pw', 'fail')}';") }
+    it { should contain("var $password = '#{ANSIBLE_VARS.fetch('virtualbox_user_pw', 'fail')}';") }
+    it { should contain("var $browserRestrictFolders = array('/home/#{virtualbox_user}/isos');") }
   end
 
   describe file('/var/www/html/index.html') do
