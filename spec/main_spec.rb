@@ -11,6 +11,10 @@ describe "Virtualbox host setup" do
     it { should be_installed }
   end
 
+  describe file('/var/www/html/') do
+    it { should be_directory }
+  end
+
   describe package('php5') do
     it { should be_installed }
   end
@@ -32,13 +36,14 @@ describe "Virtualbox host setup" do
     it { should be_owned_by(virtualbox_user) }
   end
 
-  describe file('/var/www/html/phpvirtualbox') do
-    it { should be_directory }
-  end
-
-  describe file('/var/www/html/phpvirtualbox/config.php') do
+  describe file('/var/www/html/config.php') do
     it { should contain("var $username = '#{virtualbox_user}';") }
     it { should contain("var $password = '#{ANSIBLE_VARS.fetch('virtualbox_user_pw', 'fail')}'") }
+  end
+
+  describe file('/var/www/html/index.html') do
+    it { should exist }
+    it { should contain('<title>phpVirtualBox - VirtualBox Web Console</title>') }
   end
 
   describe file('/etc/default/virtualbox') do

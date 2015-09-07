@@ -88,19 +88,28 @@
 
 - name: Make sure webdir for phpVirtualBox exists
   file:
-    path: /var/www/html/phpvirtualbox
+    path: /var/www/html/
     state: directory
+
+- name: Delete default index.html from apache
+  file:
+    path: /var/www/html/index.html
+    state: absent
 
 - name: Install phpVirtualBox
   unarchive:
     copy: no # do not copy from ansible machine
     src: "/tmp/phpvirtualbox-{{virtualbox_version}}-2.zip"
-    dest: "/var/www/html/phpvirtualbox/"
+    dest: "/var/www/html/"
+    # Will result in a folder like phpvirtualbox-5.0.2/
+
+- name: Move data out of phpvirtualbox-* folder into html dir
+  shell: "mv /var/www/html/phpvirtualbox-*/* /var/www/html/ && rm -r /var/www/html/phpvirtualbox-*/"
 
 - name: Configure phpVirtualBox
   template:
     src: config.php.j2
-    dest: /var/www/html/phpvirtualbox/config.php
+    dest: /var/www/html/config.php
 
 - name: Configure vboxweb deamon user
   template:
