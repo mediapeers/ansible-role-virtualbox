@@ -31,7 +31,7 @@
   shell: "cd /tmp/ &&  wget http://download.virtualbox.org/virtualbox/{{virtualbox_version}}.2/Oracle_VM_VirtualBox_Extension_Pack-{{virtualbox_version}}.2.vbox-extpack"
 
 - name: Install VirtualBox extension pack
-  shell: "VBoxManage extpack install /tmp/Oracle_VM_VirtualBox_Extension_Pack-{{virtualbox_version}}.2.vbox-extpack"
+  shell: "VBoxManage extpack install --replace /tmp/Oracle_VM_VirtualBox_Extension_Pack-{{virtualbox_version}}.2.vbox-extpack"
 
 - name: Add user to run virtualbox deamon
   user:
@@ -88,8 +88,9 @@
 
 - name: Install phpVirtualBox
   unarchive:
+    copy: no # do not copy from ansible machine
     src: "/tmp/phpvirtualbox-{{virtualbox_version}}-2.zip"
-    dest: "/var/www/html/phpvirtualbox"
+    dest: "/var/www/html/phpvirtualbox/"
 
 - name: Configure phpVirtualBox
   template:
