@@ -54,6 +54,11 @@ describe "Virtualbox host setup" do
 
   describe service('vboxweb-service') do
     it { should be_enabled }
+    it { should be_running }
   end
 
+  describe service('apache2') do
+    it { should be_enabled }
+    it { should be_running }
+  end
 end

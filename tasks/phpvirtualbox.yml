@@ -1,0 +1,61 @@
+# phpVirtualBox setup:
+
+- name: Install Apache and PHP5 with necessary extensions
+  apt:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - apache2
+    - php5
+    - php5-common
+    - php-soap
+    - php5-gd
+
+- name: Make sure webdir for phpVirtualBox exists
+  file:
+    path: /var/www/html/
+    state: directory
+
+- name: Determine if phpVirtualBox was already installed (use vboxinit file as inidicator)
+  stat:
+    path: /var/www/html/vboxinit
+  register: phpvirtualbox_file
+
+- name: Delete default index.html from apache
+  file:
+    path: /var/www/html/index.html
+    state: absent
+  when: phpvirtualbox_file.stat.exists == False
+
+- name: Download phpVirtualBox
+  shell: "cd /tmp/ &&  wget http://sourceforge.net/projects/phpvirtualbox/files/phpvirtualbox-{{virtualbox_version}}-2.zip"
+  when: phpvirtualbox_file.stat.exists == False
+
+- name: Install phpVirtualBox
+  unarchive:
+    copy: no # do not copy from ansible machine
+    src: "/tmp/phpvirtualbox-{{virtualbox_version}}-2.zip"
+    dest: "/var/www/html/"
+    # Will result in a folder like phpvirtualbox-5.0.2/
+  when: phpvirtualbox_file.stat.exists == False
+
+- name: Move data out of phpvirtualbox-* folder into html dir
+  shell: "mv /var/www/html/phpvirtualbox-*/* /var/www/html/ && rm -r /var/www/html/phpvirtualbox-*/"
+  when: phpvirtualbox_file.stat.exists == False
+
+- name: Configure phpVirtualBox
+  template:
+    src: config.php.j2
+    dest: /var/www/html/config.php
+
+- name: Configure vboxweb deamon user
+  template:
+    src: virtualbox.j2
+    dest: /etc/default/virtualbox
+  notify:
+    - restart vboxweb-service
+
+- name: Enable vboxweb deamon on startub
+  service:
+    name: vboxweb-service
+    enabled: yes
