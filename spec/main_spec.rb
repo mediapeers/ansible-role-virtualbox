@@ -36,20 +36,20 @@ describe "Virtualbox host setup" do
   end
 
   describe file('/var/www/html/config.php') do
-    it { should contain("var $username = '#{virtualbox_user}';") }
-    it { should contain("var $password = '#{ANSIBLE_VARS.fetch('virtualbox_user_pw', 'fail')}';") }
-    it { should contain("var $password = '#{ANSIBLE_VARS.fetch('virtualbox_user_pw', 'fail')}';") }
-    it { should contain("var $browserRestrictFolders = array('/home/#{virtualbox_user}/isos');") }
+    its(:content) { should include("var $username = '#{virtualbox_user}';") }
+    its(:content) { should include("var $password = '#{ANSIBLE_VARS.fetch('virtualbox_user_pw', 'fail')}';") }
+    its(:content) { should include("var $password = '#{ANSIBLE_VARS.fetch('virtualbox_user_pw', 'fail')}';") }
+    its(:content) { should include("var $browserRestrictFolders = array('/home/#{virtualbox_user}/isos');") }
   end
 
   describe file('/var/www/html/index.html') do
     it { should exist }
-    it { should contain('<title>phpVirtualBox - VirtualBox Web Console</title>') }
+    its(:content) { should include('<title>phpVirtualBox - VirtualBox Web Console</title>') }
   end
 
   describe file('/etc/default/virtualbox') do
     it { should exist }
-    it { should contain("VBOXWEB_USER=#{virtualbox_user}") }
+    its(:content) { should include("VBOXWEB_USER=#{virtualbox_user}") }
   end
 
   describe service('vboxweb-service') do
