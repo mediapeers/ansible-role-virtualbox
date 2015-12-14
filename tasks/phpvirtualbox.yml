@@ -28,7 +28,7 @@
   when: phpvirtualbox_file.stat.exists == False
 
 - name: Download phpVirtualBox
-  shell: "cd /tmp/ &&  wget http://sourceforge.net/projects/phpvirtualbox/files/phpvirtualbox-{{virtualbox_version}}-2.zip"
+  shell: "cd /tmp/ &&  wget http://sourceforge.net/projects/phpvirtualbox/files/phpvirtualbox-{{virtualbox_version}}-4.zip"
   when: phpvirtualbox_file.stat.exists == False
 
 - name: Install phpVirtualBox
