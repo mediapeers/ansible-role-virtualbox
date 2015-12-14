@@ -34,9 +34,9 @@
 - name: Install phpVirtualBox
   unarchive:
     copy: no # do not copy from ansible machine
-    src: "/tmp/phpvirtualbox-{{virtualbox_version}}-2.zip"
+    src: "/tmp/phpvirtualbox-{{virtualbox_version}}-4.zip"
     dest: "/var/www/html/"
-    # Will result in a folder like phpvirtualbox-5.0.2/
+    # Will result in a folder like phpvirtualbox-5.0.4/
   when: phpvirtualbox_file.stat.exists == False
 
 - name: Move data out of phpvirtualbox-* folder into html dir
