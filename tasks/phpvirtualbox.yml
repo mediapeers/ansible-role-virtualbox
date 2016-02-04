@@ -28,15 +28,15 @@
   when: phpvirtualbox_file.stat.exists == False
 
 - name: Download phpVirtualBox
-  shell: "cd /tmp/ &&  wget http://sourceforge.net/projects/phpvirtualbox/files/phpvirtualbox-{{virtualbox_version}}-4.zip"
+  shell: "cd /tmp/ &&  wget http://sourceforge.net/projects/phpvirtualbox/files/phpvirtualbox-{{virtualbox_version}}-5.zip"
   when: phpvirtualbox_file.stat.exists == False
 
 - name: Install phpVirtualBox
   unarchive:
     copy: no # do not copy from ansible machine
-    src: "/tmp/phpvirtualbox-{{virtualbox_version}}-4.zip"
+    src: "/tmp/phpvirtualbox-{{virtualbox_version}}-5.zip"
     dest: "/var/www/html/"
-    # Will result in a folder like phpvirtualbox-5.0.4/
+    # Will result in a folder like phpvirtualbox-5.0.5/
   when: phpvirtualbox_file.stat.exists == False
 
 - name: Move data out of phpvirtualbox-* folder into html dir
