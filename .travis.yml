@@ -16,6 +16,10 @@ install:
   - pip install ansible
   - ansible --version
 
+  # Install serverspec
+  - ruby -v
+  - gem install serverspec
+
   # Add ansible.cfg to pick up roles path.
   - "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
 
@@ -33,3 +37,6 @@ script:
     | grep -q 'changed=1.*failed=0'
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)
+
+  # Run serverpec tests
+  - rake spec
