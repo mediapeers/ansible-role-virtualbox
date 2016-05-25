@@ -1,5 +1,5 @@
 ---
-# tasks file for mpx.virtualbox
+# tasks file for mediapeers.virtualbox
 
 - include: virtualbox.yml
 - include: phpvirtualbox.yml

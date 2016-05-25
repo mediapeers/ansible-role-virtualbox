@@ -18,12 +18,15 @@ The role accepts following variables:
 Depends on no other roles.
 
 ## Example Playbook
-Example on how to include role into your playbook:
+Copy this role into the roles/mediapeers.virtualbox dir in your Ansible project. Preferably add it as a submodule.
+You can also install it with `ansible-galaxy install mediapeers.virtualbox`.
+Then use it like so:
+
 ```yaml
 - name: My playbook
   hosts: servers
   roles:
-    - { role: mpx.virtualbox, virtualbox_version: 5.0, virtualbox_user: vbox }
+    - { role: mediapeers.virtualbox, virtualbox_version: 5.0, virtualbox_user: vbox }
 ```
 
 ## License

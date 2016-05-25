@@ -1,5 +1,5 @@
 ---
-# handlers file for mpx.virtualbox
+# handlers file for mediapeers.virtualbox
 
 - name: restart vboxweb-service
   service:
