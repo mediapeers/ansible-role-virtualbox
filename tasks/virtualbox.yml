@@ -12,14 +12,22 @@
 
 - name: Add VirtualBox repo key
   apt_key:
-    url: http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc
+    url: https://www.virtualbox.org/download/oracle_vbox.asc
     state: present
+
+- name: Add VirtualBox repo 2016 key
+  apt_key:
+    url: https://www.virtualbox.org/download/oracle_vbox_2016.asc
+    state: present
+
+
 
 - name: Add VirtualBox repo
   apt_repository:
-    repo: 'deb http://download.virtualbox.org/virtualbox/debian trusty contrib'
+    repo: 'deb http://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }} contrib'
     state: present
     update_cache: yes
+  # trusty xenial
 
 - name: Install virtualbox in given version
   apt:
@@ -31,28 +39,28 @@
   register: extpack_list
 
 - name: Download VirtualBox extension pack
-  shell: "cd /tmp/ &&  wget http://download.virtualbox.org/virtualbox/{{virtualbox_version}}.2/Oracle_VM_VirtualBox_Extension_Pack-{{virtualbox_version}}.2.vbox-extpack"
+  shell: "cd /tmp/ &&  wget http://download.virtualbox.org/virtualbox/{{ virtualbox_version }}.2/Oracle_VM_VirtualBox_Extension_Pack-{{ virtualbox_version }}.2.vbox-extpack"
   when: 'extpack_list.stdout == "Extension Packs: 0"'
 
 - name: Install VirtualBox extension pack
-  shell: "VBoxManage extpack install --replace /tmp/Oracle_VM_VirtualBox_Extension_Pack-{{virtualbox_version}}.2.vbox-extpack"
+  shell: "VBoxManage extpack install --replace /tmp/Oracle_VM_VirtualBox_Extension_Pack-{{ virtualbox_version }}.2.vbox-extpack"
   when: 'extpack_list.stdout == "Extension Packs: 0"'
 
 - name: Add user to run virtualbox deamon
   user:
-    name: "{{virtualbox_user}}"
+    name: "{{ virtualbox_user }}"
     createhome: yes
     shell: '/bin/bash'
     state: present
     append: yes # append groups
     groups: vboxusers
     update_password: on_create # only touch PW on user creation
-    password: "{{virtualbox_user_sha_pw}}"
+    password: "{{ virtualbox_user_sha_pw }}"
 
 - name: Create a folder for ISO files to be shared with phpVirtualBox
   file:
     path: /home/{{virtualbox_user}}/isos
-    owner: "{{virtualbox_user}}"
+    owner: "{{ virtualbox_user }}"
     group: vboxusers
     mode: 0770
     state: directory
