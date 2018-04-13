@@ -1,5 +1,5 @@
 ---
 # tasks file for mediapeers.virtualbox
 
-- include: virtualbox.yml
-- include: phpvirtualbox.yml
+- import_tasks: virtualbox.yml
+- import_tasks: phpvirtualbox.yml
