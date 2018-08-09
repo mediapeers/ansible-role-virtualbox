@@ -1,15 +1,10 @@
 # phpVirtualBox setup:
 
-- name: Install Apache and PHP5 with necessary extensions
+- name: "Install Apache and PHP{{ php_version }} with necessary extensions"
   apt:
     name: "{{item}}"
     state: present
-  with_items:
-    - apache2
-    - php5
-    - php5-common
-    - php-soap
-    - php5-gd
+  with_items: '{{ php_packages }}'
 
 - name: Make sure webdir for phpVirtualBox exists
   file:

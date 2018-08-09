@@ -1,5 +1,10 @@
 ---
 # tasks file for mediapeers.virtualbox
+- include_vars: "{{ item }}"
+  with_first_found:
+   - "{{ ansible_distribution_release }}.yml"
+   - "{{ ansible_os_family }}.yml"
+   - "default.yml"
 
 - import_tasks: virtualbox.yml
 - import_tasks: phpvirtualbox.yml
