@@ -39,11 +39,11 @@
     dest: /tmp/oracle_virtualbox_extension_pack.vbox-extpack
     force: yes
   register: download_result
-  when: extpack_list.stdout == "Extension Packs: 0"
+  when: 'extpack_list.stdout == "Extension Packs: 0"'
 
 - name: Install VirtualBox extension pack
   shell: "VBoxManage extpack install --replace /tmp/oracle_virtualbox_extension_pack.vbox-extpack"
-  when: extpack_list.stdout == "Extension Packs: 0"
+  when: 'extpack_list.stdout == "Extension Packs: 0"'
 
 - name: Add user to run virtualbox deamon
   user:
