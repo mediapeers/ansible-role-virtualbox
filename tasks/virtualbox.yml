@@ -24,7 +24,7 @@
     state: present
     update_cache: yes
 
-- name: Install virtualbox in given version
+- name: "Install virtualbox in version {{ virtualbox_version }}"
   apt:
     name: virtualbox-{{ virtualbox_version }}
     state: present
@@ -36,13 +36,18 @@
 - name: Download VirtualBox extension pack
   get_url:
     url: "https://download.virtualbox.org/virtualbox/{{ virtualbox_version }}.2/Oracle_VM_VirtualBox_Extension_Pack-{{ virtualbox_version }}.2.vbox-extpack"
-    dest: /tmp/oracle_virtualbox_extension_pack.vbox-extpack
+    dest: /tmp/
     force: yes
   register: download_result
   when: 'extpack_list.stdout == "Extension Packs: 0"'
 
+- name: Output downloaded VirtualBox extension pack file name
+  debug:
+    var: download_result.dest
+    verbosity: 1
+
 - name: Install VirtualBox extension pack
-  shell: "VBoxManage extpack install --replace /tmp/oracle_virtualbox_extension_pack.vbox-extpack"
+  shell: "VBoxManage extpack install --replace {{ download_result.dest }}"
   when: 'extpack_list.stdout == "Extension Packs: 0"'
 
 - name: Add user to run virtualbox deamon
