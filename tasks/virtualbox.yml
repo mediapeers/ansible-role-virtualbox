@@ -33,9 +33,13 @@
   shell: "VBoxManage list extpacks"
   register: extpack_list
 
+- name: Output installed extpacks
+  debug:
+    var: download_result.stdtout
+
 - name: Download VirtualBox extension pack
   get_url:
-    url: "https://download.virtualbox.org/virtualbox/{{ virtualbox_version }}.2/Oracle_VM_VirtualBox_Extension_Pack-{{ virtualbox_extpack_version }}.vbox-extpack"
+    url: "https://download.virtualbox.org/virtualbox/{{ virtualbox_extpack_version }}/Oracle_VM_VirtualBox_Extension_Pack-{{ virtualbox_extpack_version }}.vbox-extpack"
     dest: /tmp/
     force: yes
   register: download_result
