@@ -58,7 +58,7 @@
   notify:
     - restart vboxweb-service
 
-- name: Enable vboxweb deamon on startub
+- name: Enable vboxweb deamon on start-up
   service:
     name: vboxweb-service
     enabled: yes

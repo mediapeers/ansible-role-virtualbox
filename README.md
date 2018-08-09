@@ -4,6 +4,11 @@
 Installs headless [Virtualbox](https://www.virtualbox.org/) and [phpVirtualbox](http://sourceforge.net/projects/phpvirtualbox/) for remote access
 through Web GUI. Meant for a headless Ubuntu/Debien server.
 
+Once the role has run through you can access the VirtualBox GUI from a browser by opening `http://<HostnameOrIP>/`.
+Use the IP or the hostname here that Ansible was running against. Make sure port 80 is not blocked by any firewall.
+
+For the first login use `admin:admin`. See more details in the [phpVirtualbox docs](https://sourceforge.net/p/phpvirtualbox/wiki/Authentication%20in%20phpVirtualBox/#logging-in-for-the-first-time)
+
 ## Requirements
 Tested with Ubuntu 14.04 server. Probably works with all Debian and Ubuntu flavours and versions which are not too old.
 
