@@ -6,11 +6,17 @@ galaxy_info:
   license: BSD
   min_ansible_version: 2.4
   platforms:
-  - name: Ubuntu
-    versions:
-      - all
-  categories:
-  - web
-  - virtualisation
+    - name: Ubuntu
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
+  galaxy_tags:
+    - php
+    - virtualbox
+    - webinterface
+    - server
+    - virtualisation
 
 dependencies: []
