@@ -1,7 +1,7 @@
 ---
 # defaults file for mediapeers.virtualbox
 
-virtualbox_version: 5.0 # could also be 4.3 or 4.2 etc.
+virtualbox_version: 5.2 # could also be 5.1, 5.0 or 4.3 etc.
 virtualbox_user: vbox
 virtualbox_user_pw: changeme
 # should be sha512 encrypted value of above string (use mkpasswd --method=SHA-512 for example):

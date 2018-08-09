@@ -10,28 +10,23 @@
     - dkms
     - unzip
 
-- name: Add VirtualBox repo key
+- name: Add VirtualBox repo keys
   apt_key:
-    url: https://www.virtualbox.org/download/oracle_vbox.asc
+    url: "https://www.virtualbox.org/download/{{ item }}.asc"
     state: present
-
-- name: Add VirtualBox repo 2016 key
-  apt_key:
-    url: https://www.virtualbox.org/download/oracle_vbox_2016.asc
-    state: present
-
-
+  with_items:
+    - oracle_vbox
+    - oracle_vbox_2016
 
 - name: Add VirtualBox repo
   apt_repository:
     repo: 'deb http://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }} contrib'
     state: present
     update_cache: yes
-  # trusty xenial
 
 - name: Install virtualbox in given version
   apt:
-    name: virtualbox-{{virtualbox_version}}
+    name: virtualbox-{{ virtualbox_version }}
     state: present
 
 - name: Check if extension pack is already installed
@@ -39,12 +34,16 @@
   register: extpack_list
 
 - name: Download VirtualBox extension pack
-  shell: "cd /tmp/ &&  wget http://download.virtualbox.org/virtualbox/{{ virtualbox_version }}.2/Oracle_VM_VirtualBox_Extension_Pack-{{ virtualbox_version }}.2.vbox-extpack"
-  when: 'extpack_list.stdout == "Extension Packs: 0"'
+  get_url:
+    url: "https://download.virtualbox.org/virtualbox/{{ virtualbox_version }}.2/Oracle_VM_VirtualBox_Extension_Pack-{{ virtualbox_version }}.2.vbox-extpack"
+    dest: /tmp/oracle_virtualbox_extension_pack.vbox-extpack
+    force: yes
+  register: download_result
+  when: extpack_list.stdout == "Extension Packs: 0"
 
 - name: Install VirtualBox extension pack
-  shell: "VBoxManage extpack install --replace /tmp/Oracle_VM_VirtualBox_Extension_Pack-{{ virtualbox_version }}.2.vbox-extpack"
-  when: 'extpack_list.stdout == "Extension Packs: 0"'
+  shell: "VBoxManage extpack install --replace /tmp/oracle_virtualbox_extension_pack.vbox-extpack"
+  when: extpack_list.stdout == "Extension Packs: 0"
 
 - name: Add user to run virtualbox deamon
   user:
