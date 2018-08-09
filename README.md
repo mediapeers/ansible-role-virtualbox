@@ -8,11 +8,12 @@ through Web GUI. Meant for a headless Ubuntu/Debien server.
 Tested with Ubuntu 14.04 server. Probably works with all Debian and Ubuntu flavours and versions which are not too old.
 
 ## Role Variables
-The role accepts following variables:
-* `virtualbox_version: 4.3`  Major Virtuablbox version
+Those are the role variables you probably want to change:
+
 * `virtualbox_user: vbox` User that runs Virtualbox deamon and phpVirtualbox connects to
 * `virtualbox_user_pw: abc123` Plaintext PW for virtualbox user needed for phpVirtualbox connection config
-* `virtualbox_user_sha_pw: ASDSDcdscsdsrweaw` SHA-512 encrypted string of above PW to setup the linux user running virualbox.
+
+There is more variables you can overwrite when using this role. For a full list see `defaults/main.yml`.
 
 ## Dependencies
 Depends on no other roles.
@@ -26,7 +27,7 @@ Then use it like so:
 - name: My playbook
   hosts: servers
   roles:
-    - { role: mediapeers.virtualbox, virtualbox_version: 5.0, virtualbox_user: vbox }
+    - { role: mediapeers.virtualbox, virtualbox_user: vbox, virtualbox_user_pw: supersecretvalue }
 ```
 
 ## License
