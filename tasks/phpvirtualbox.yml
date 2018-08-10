@@ -22,17 +22,25 @@
     state: absent
   when: phpvirtualbox_file.stat.exists == False
 
-- name: Download phpVirtualBox
-  shell: "cd /tmp/ &&  wget http://sourceforge.net/projects/phpvirtualbox/files/phpvirtualbox-{{virtualbox_version}}-5.zip"
-  when: phpvirtualbox_file.stat.exists == False
-
-- name: Install phpVirtualBox
+- name: Install phpVirtualbox (from SourceForge - older versions)
   unarchive:
-    copy: no # do not copy from ansible machine
-    src: "/tmp/phpvirtualbox-{{virtualbox_version}}-5.zip"
-    dest: "/var/www/html/"
-    # Will result in a folder like phpvirtualbox-5.0.5/
-  when: phpvirtualbox_file.stat.exists == False
+    src: "http://sourceforge.net/projects/phpvirtualbox/files/phpvirtualbox-{{ virtualbox_php_version }}.zip"
+    remote_src: yes
+    dest: /var/www/html
+  when:
+    - virtualbox_php_version is version('5.0', '<')
+    - phpvirtualbox_file.stat.exists == False
+
+- name: Install phpVirtualBox (from Github - newer versions)
+  unarchive:
+    src: 'https://github.com/phpvirtualbox/phpvirtualbox/archive/{{ virtualbox_php_version }}.zip'
+    remote_src: yes
+    dest: /var/www/html/
+  when:
+    - virtualbox_php_version is version('5.0', '>=')
+    - phpvirtualbox_file.stat.exists == False
+
+# Unpacking will result in a folder like phpvirtualbox-5.0.5/
 
 - name: Move data out of phpvirtualbox-* folder into html dir
   shell: "mv /var/www/html/phpvirtualbox-*/* /var/www/html/ && rm -r /var/www/html/phpvirtualbox-*/"
@@ -50,7 +58,7 @@
   notify:
     - restart vboxweb-service
 
-- name: Enable vboxweb deamon on startub
+- name: Enable vboxweb deamon on start-up
   service:
     name: vboxweb-service
     enabled: yes

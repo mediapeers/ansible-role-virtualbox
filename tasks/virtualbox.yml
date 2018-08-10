@@ -10,40 +10,48 @@
     - dkms
     - unzip
 
-- name: Add VirtualBox repo key
+- name: Add VirtualBox repo keys
   apt_key:
-    url: https://www.virtualbox.org/download/oracle_vbox.asc
+    url: "https://www.virtualbox.org/download/{{ item }}.asc"
     state: present
-
-- name: Add VirtualBox repo 2016 key
-  apt_key:
-    url: https://www.virtualbox.org/download/oracle_vbox_2016.asc
-    state: present
-
-
+  with_items:
+    - oracle_vbox
+    - oracle_vbox_2016
 
 - name: Add VirtualBox repo
   apt_repository:
     repo: 'deb http://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }} contrib'
     state: present
     update_cache: yes
-  # trusty xenial
 
-- name: Install virtualbox in given version
+- name: "Install virtualbox in version {{ virtualbox_version }}"
   apt:
-    name: virtualbox-{{virtualbox_version}}
+    name: virtualbox-{{ virtualbox_version }}
     state: present
 
 - name: Check if extension pack is already installed
   shell: "VBoxManage list extpacks"
   register: extpack_list
 
+- name: Output installed extpacks
+  debug:
+    var: download_result.stdtout
+
 - name: Download VirtualBox extension pack
-  shell: "cd /tmp/ &&  wget http://download.virtualbox.org/virtualbox/{{ virtualbox_version }}.2/Oracle_VM_VirtualBox_Extension_Pack-{{ virtualbox_version }}.2.vbox-extpack"
+  get_url:
+    url: "https://download.virtualbox.org/virtualbox/{{ virtualbox_extpack_version }}/Oracle_VM_VirtualBox_Extension_Pack-{{ virtualbox_extpack_version }}.vbox-extpack"
+    dest: /tmp/
+    force: yes
+  register: download_result
   when: 'extpack_list.stdout == "Extension Packs: 0"'
 
+- name: Output downloaded VirtualBox extension pack file name
+  debug:
+    var: download_result.dest
+    verbosity: 1
+
 - name: Install VirtualBox extension pack
-  shell: "VBoxManage extpack install --replace /tmp/Oracle_VM_VirtualBox_Extension_Pack-{{ virtualbox_version }}.2.vbox-extpack"
+  shell: "echo 'y' |VBoxManage extpack install --replace {{ download_result.dest }}"
   when: 'extpack_list.stdout == "Extension Packs: 0"'
 
 - name: Add user to run virtualbox deamon
@@ -55,7 +63,7 @@
     append: yes # append groups
     groups: vboxusers
     update_password: on_create # only touch PW on user creation
-    password: "{{ virtualbox_user_sha_pw }}"
+    password: "{{ virtualbox_user_pw|password_hash('sha512') }}"
 
 - name: Create a folder for ISO files to be shared with phpVirtualBox
   file:

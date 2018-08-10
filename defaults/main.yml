@@ -1,8 +1,10 @@
 ---
 # defaults file for mediapeers.virtualbox
 
-virtualbox_version: 5.0 # could also be 4.3 or 4.2 etc.
+virtualbox_version: 5.2 # could also be 5.0 or 4.3 etc.
+# Sub versions for Vbox extension packs and phpVirtualbox:
+virtualbox_extpack_version: "{{ virtualbox_version}}.12"
+virtualbox_php_version: "{{ virtualbox_version}}-0"
+
 virtualbox_user: vbox
 virtualbox_user_pw: changeme
-# should be sha512 encrypted value of above string (use mkpasswd --method=SHA-512 for example):
-virtualbox_user_sha_pw: "$6$rngaHnG3$PVgZgPKUIL0.JlnyzDPefV8p0ha/YgFPSZ58db9K0tVDrjoP7dWTvBC4xYv.I7GAT3sxeE.SgKPO/7p9M8HDl/"
