@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/mediapeers/ansible-role-virtualbox.svg?branch=master)](https://travis-ci.org/mediapeers/ansible-role-virtualbox)
+[![Build Status](https://travis-ci.com/mediapeers/ansible-role-virtualbox.svg?branch=master)](https://travis-ci.com/mediapeers/ansible-role-virtualbox)
 
 # Ansible role Virtualbox
 Installs headless [Virtualbox](https://www.virtualbox.org/) and [phpVirtualbox](https://github.com/phpvirtualbox/phpvirtualbox) for remote access
