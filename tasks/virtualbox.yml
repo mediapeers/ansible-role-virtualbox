@@ -3,13 +3,12 @@
 
 - name: Install build-esential and dkms (prepare)
   apt:
-    name: "{{ item }}"
+    name:
+      - build-essential
+      - dkms
+      - unzip
     state: present
     update_cache: yes
-  with_items:
-    - build-essential
-    - dkms
-    - unzip
 
 - name: Add VirtualBox repo keys
   apt_key:

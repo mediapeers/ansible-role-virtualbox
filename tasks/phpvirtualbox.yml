@@ -2,9 +2,8 @@
 
 - name: "Install Apache and PHP{{ php_version }} with necessary extensions"
   apt:
-    name: "{{ item }}"
+    name: "{{ php_packages }}"
     state: present
-  with_items: '{{ php_packages }}'
 
 - name: Make sure webdir for phpVirtualBox exists
   file:
