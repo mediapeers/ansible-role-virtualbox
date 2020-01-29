@@ -6,5 +6,8 @@ virtualbox_version: 5.2 # could also be 5.0 or 4.3 etc.
 virtualbox_extpack_version: "{{ virtualbox_version}}.12"
 virtualbox_php_version: "{{ virtualbox_version}}-0"
 
+# Should not need changing:
+virtualbox_repo_base_url: "https://download.virtualbox.org/virtualbox"
+
 virtualbox_user: vbox
 virtualbox_user_pw: changeme

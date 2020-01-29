@@ -1,9 +1,10 @@
+---
 # Virtualbox setup
 
 - name: Install build-esential and dkms (prepare)
   apt:
     name: "{{ item }}"
-    state: latest
+    state: present
     update_cache: yes
   with_items:
     - build-essential
@@ -20,7 +21,7 @@
 
 - name: Add VirtualBox repo
   apt_repository:
-    repo: 'deb http://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }} contrib'
+    repo: 'deb {{ virtualbox_repo_base_url }}/debian {{ ansible_distribution_release }} contrib'
     state: present
     update_cache: yes
 
@@ -39,7 +40,7 @@
 
 - name: Download VirtualBox extension pack
   get_url:
-    url: "https://download.virtualbox.org/virtualbox/{{ virtualbox_extpack_version }}/Oracle_VM_VirtualBox_Extension_Pack-{{ virtualbox_extpack_version }}.vbox-extpack"
+    url: "{{ virtualbox_repo_base_url }}/{{ virtualbox_extpack_version }}/Oracle_VM_VirtualBox_Extension_Pack-{{ virtualbox_extpack_version }}.vbox-extpack"
     dest: /tmp/
     force: yes
   register: download_result
@@ -51,7 +52,7 @@
     verbosity: 1
 
 - name: Install VirtualBox extension pack
-  shell: "echo 'y' |VBoxManage extpack install --replace {{ download_result.dest }}"
+  shell: "echo 'y' | VBoxManage extpack install --replace {{ download_result.dest }}"
   when: 'extpack_list.stdout == "Extension Packs: 0"'
 
 - name: Add user to run virtualbox deamon
@@ -67,9 +68,8 @@
 
 - name: Create a folder for ISO files to be shared with phpVirtualBox
   file:
-    path: /home/{{virtualbox_user}}/isos
+    path: /home/{{ virtualbox_user }}/isos
     owner: "{{ virtualbox_user }}"
     group: vboxusers
     mode: 0770
     state: directory
-
